@@ -10,15 +10,18 @@ typedef struct LinkedStack{
     int stackLength;
 }LinkedStack;
 
+/* get the top node from the stack.*/
 int top(LinkedStack *pStack){
    return pStack->topNode->element; 
 }
 
+/* pop the top node from the stack.*/
 void pop(LinkedStack **pStack){
     ListNode *pNode = (*pStack)->topNode->next;
     free(*pStack);
     *pStack = pNode;
 }
+
 ListNode* allocNode(int element){
     ListNode *pNode = (ListNode*)malloc(sizeof(ListNode));
     if(NULL != pNode){
@@ -27,6 +30,8 @@ ListNode* allocNode(int element){
     }
     return pNode;
 }
+
+/* push a node into the stack.*/
 void push(LinkedStack **pStack,int element){
     ListNode *pNode = allocNode(element);
     pNode->next = (*pStack)->topNode;
@@ -44,8 +49,8 @@ void print(const LinkedStack *pStack){
     printf("%d\n",pStack->downNode->element);
 }
 
-int main(){
 
 
-	return 0;
-}
+
+
+
