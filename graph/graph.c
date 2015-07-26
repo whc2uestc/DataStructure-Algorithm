@@ -1,4 +1,6 @@
 #include <vector>
+3include <queue>
+#include <algorithm>
 using namespace std;
 
 #define MAX_V 20;
@@ -9,7 +11,39 @@ vector<int> G[MAX_V];
 /* struct edge{int to,cost;};
  * vector<edge> G[MAX_V];
  */
+int V;	//the number of vertices.
+int E; 	//the number of edge.
 
+
+/* judge whether the edge exists in the graph.*/
+bool existsEdge(int i,int j){
+	vector<int>::iterator it;
+	for(it=G[i].begin(); it!=G[i].end(); it++)
+		if(j == *it)
+			return true;
+	return false;
+}
+ 
+/* insert the edge into the graph.*/
+void insertEdge(int i,int j){
+	if(existsEdge(i,j))
+		return ;
+	G[i].push_back(j);
+	G[j].push_back(i);
+}
+/* erase the edge from the graph.*/
+void eraseEdge(int i,int j){
+	for(it=G[i].begin(); it!=G[i].end(); it++)
+		if(j == *it)
+			G[i].erase(it);
+	for(it=G[j].begin(); it!=G[j].end(); it++)
+		if(i == *it)
+			G[j].erase(it);
+}
+/* get the degree of the vertices.*/
+int degree(int i){
+	return G[i].size();
+}
 /* the dfs of graph.*/
 void dfs(int v){
 	static int flag[MAX_V] = {0};
@@ -24,24 +58,21 @@ void dfs(int v){
 
 /* the bfs of graph.*/
 void bfs(int v){
-	int flag[MAX_V] = {0};
-	int i = 0;
-	list<int> list_v;
-	while(i < MAX_V){
-		flag[v] = 1;
-		vector<int>::iterator it;
-		for(it = G[v].begin(); it!=G[v].end(); it++){
-			if(0 == flag[*it]){
-				printf("%d <--> %d\n",v,*it);
-				list_v.push(*it);
+	queue<int> que;
+	bool flag[MAX_V];
+	fill(flag,flag+MAX_V,false);
+	que.push(v);
+	flag[v] = true;
+	while(!que.empty()){
+		int vi = que.front();
+		que.pop();
+		vector<int> it;
+		for(it=G[vi].begin(); it!=G[vi].end(); it++){
+			if(!flag[*it]){
+				printf("%d <--> %d\n",vi,*it);
+				que.push(*it);
+				flag[*it] = true;
 			}
 		}
-		if(list_v.size()){
-			v = list_v.front();
-			list_v.pop();
-		}else{
-			
-		}
-		i ++;
 	}
 }
