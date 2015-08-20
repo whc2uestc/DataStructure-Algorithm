@@ -4,86 +4,76 @@ using namespace std;
 /* Big root heap.
  * 大根堆
  */
-void swap(int *a,int *b){
+static void swap(int *a,int *b){
 	*a = (*a)^(*b);
 	*b = (*a)^(*b);
 	*a = (*a)^(*b);
 }
 /* init the heap.*/
-void sift(vector<int> &heap,int index){
-	int temp = heap[index];
-	while((index+1)*2 <= heap.size()){
-		if((index+1)*2==heap.size() && temp<heap[(index+1)*2-1]){
-			heap[index] = heap[(index+1)*2-1]);
+void sift_up(vector<int> &heap,int index){
+	while((index+1)/2-1 >= 0){
+		if(heap[(index+1)/2-1] < heap[index]){
+			swap(&heap[(index+1)/2-1],&heap[index]);
+			index = (index+1)/2-1;
+		}else
 			break;
-		}
-		else if(index*2<heap.size()){
-			int max = heap[(index+1)*2]>heap[(index+1)*2-1]?(index+1)*2:(index+1)*2-1;
-			if(x < heap[max]){
-				heap[index] = heap[max];
-				index = max;
-			}else
-				break;
-		}else{
-			break ;
-		}
 	}
-	heap[index] = temp; 
 }
-void init(vector<int> &heap,int index){
+
+void heap_init(vector<int> &heap){
 	if(heap.empty())
 		return ;
-	int i;
-	for(i=heap.size()/2; i>=0; i--){
-		sift(heap,i);
+	for(int i=1; i<heap.size(); i++){
+		sift_up(heap,i);
 	}
 }
 
 /* insert the element into the heap.*/
-void insert(vector<int> &heap,int element){
+void heap_insert(vector<int> &heap,int element){
 	heap.push_back(element);
-	int len = heap.size();
-	int i = len-1;
-	while(i > 0){
-		if(heap[(i-1)/2] > heap[i])
-			return ;
-		heap[(i-1)/2] = heap[(i-1)/2]^heap[i];
-		heap[i] = heap[(i-1)/2]^heap[i];;
-		heap[(i-1)/2] = heap[(i-1)/2]^heap[i];
-		i = (i-1)/2;
-	}
+	sift_up(heap,heap.size()-1);
 }
 
 /* get the top element.*/
-bool top(vector<int> &heap,int *res){
+void sift_down(vector<int> &heap,int index){
+	while(index*2+2 < heap.size()){
+		if(heap[index*2+1]>=heap[index*2+2] && heap[index]<heap[index*2+1]){
+			swap(&heap[index],&heap[index*2+1]);
+			index = index*2+1;
+		}else if(heap[index*2+1]<heap[index*2+2] && heap[index]<heap[index*2+2]){
+			swap(&heap[index],&heap[index*2+2]);
+			index = index*2+2;
+		}else
+			break;
+	}
+}
+bool heap_top(vector<int> &heap,int *res){
 	if(heap.empty())
 		return false;
 	*res = heap[0];
-	sift(heap,0);
+	heap[0] = heap[heap.size()-1];
+	heap.erase(heap.end()-1);
+	sift_down(heap,0);
 	return true;
 }
 
-
-void sort(vector<int> &vec){
-	init(vec);
+void heap_sort(vector<int> &vec){
+	heap_init(vec);
+	for(int i=10;i<20;i++)
+		heap_insert(vec,i);
 	int len = vec.size();
 	while(len--){
 		int num;
-		top(vec,&num);
+		heap_top(vec,&num);
 		printf("%d ",num);
 	}
 }
 
 int main(){
 	vector<int> vec;
-	int i = 10;
-	while(i--){
+	for(int i=0; i<10; i++){
 		vec.push_back(i);
 	}
-	sort(vec);
-	for(i=0; i<10; i++)
-		printf("%d ",vec[i]);
+	heap_sort(vec);
 	return 0;
 }
-
-
