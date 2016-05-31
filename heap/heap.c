@@ -1,3 +1,8 @@
+/*
+ * heap.c
+ * author: Hancheng Wang
+ *   date: 2016.5.31
+ */
 #include <vector>
 #include <stdio.h>
 using namespace std;
@@ -59,8 +64,6 @@ bool heap_top(vector<int> &heap,int *res){
 
 void heap_sort(vector<int> &vec){
 	heap_init(vec);
-	for(int i=10;i<20;i++)
-		heap_insert(vec,i);
 	int len = vec.size();
 	while(len--){
 		int num;
