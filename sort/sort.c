@@ -1,3 +1,8 @@
+/*
+ * sort.c
+ * author: Hancheng Wang
+ *   date: 2016.5.31
+ */
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -126,7 +131,7 @@ void mergeSort(int nums[],int s,int t){
 /*
  * heap sort.
  */
- 
+
  
  
 /*
